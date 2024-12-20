@@ -11,7 +11,7 @@ import UIKit
 struct ItemSlider {
     var color: UIColor
     var title: String
-    var text: String
+    var subtitle: String
     var imageName: String
 }
 

@@ -9,6 +9,12 @@ import UIKit
 
 class NewStudentScreenVC: UIViewController {
     
+    private let sliderData: [ItemSlider] = [
+        ItemSlider(color: Styles.Colors.appWhiteColor, title: "Мы одна большая музыкальная семья", subtitle: "Вместе мы создаём гармонию, поддерживаем друг друга и вдохновляем на новые свершения. Здесь каждый найдёт своё место.", imageName: ""),
+        ItemSlider(color: Styles.Colors.appWhiteColor, title: "Твоя мечта, наша поддержка", subtitle: "Как в настоящей семье, мы всегда рядом: помогаем, учим и радуемся твоим успехам. Каждый аккорд — шаг к твоему будущему.", imageName: ""),
+        ItemSlider(color: Styles.Colors.appWhiteColor, title: "Общая цель — общее счастье", subtitle: "Мы верим, что музыка объединяет. Вместе с тобой мы строим сообщество, где каждый важен и ценен.", imageName: "")
+    ]
+    
     lazy var collectionView: UICollectionView = {
         
         let layout = UICollectionViewFlowLayout()
@@ -20,7 +26,7 @@ class NewStudentScreenVC: UIViewController {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.delegate = self
         collection.dataSource = self
-        collection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collection.register(SliderCell.self, forCellWithReuseIdentifier: "cell")
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.isPagingEnabled = true
         
@@ -68,12 +74,18 @@ class NewStudentScreenVC: UIViewController {
 
 extension NewStudentScreenVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        sliderData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        
-        return cell
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? SliderCell {
+            
+            cell.contentView.backgroundColor = sliderData[indexPath.item].color
+            cell.titleLabel.text = sliderData[indexPath.item].title
+            cell.subtitleLabel.text = sliderData[indexPath.item].subtitle
+            
+            return cell
+        }
+        return UICollectionViewCell()
     }
 }
