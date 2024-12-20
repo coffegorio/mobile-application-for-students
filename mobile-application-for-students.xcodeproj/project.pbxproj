@@ -6,15 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E818DED22D12C5C70015871F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E818DED12D12C5C70015871F /* SnapKit */; };
+		E842AE452D14D7D70026CD46 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E842AE442D14D7D70026CD46 /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		E818DEA42D12B8E30015871F /* mobile-application-for-students.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "mobile-application-for-students.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E818DEB62D12B8E50015871F /* Exceptions for "mobile-application-for-students" folder in "mobile-application-for-students" target */ = {
+		E818DF882D12CDE70015871F /* Exceptions for "mobile-application-for-students" folder in "mobile-application-for-students" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				ApplicationFiles/Info.plist,
 			);
 			target = E818DEA32D12B8E30015871F /* mobile-application-for-students */;
 		};
@@ -24,7 +29,7 @@
 		E818DEA62D12B8E30015871F /* mobile-application-for-students */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				E818DEB62D12B8E50015871F /* Exceptions for "mobile-application-for-students" folder in "mobile-application-for-students" target */,
+				E818DF882D12CDE70015871F /* Exceptions for "mobile-application-for-students" folder in "mobile-application-for-students" target */,
 			);
 			path = "mobile-application-for-students";
 			sourceTree = "<group>";
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E818DED22D12C5C70015871F /* SnapKit in Frameworks */,
+				E842AE452D14D7D70026CD46 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +85,8 @@
 			);
 			name = "mobile-application-for-students";
 			packageProductDependencies = (
+				E818DED12D12C5C70015871F /* SnapKit */,
+				E842AE442D14D7D70026CD46 /* Lottie */,
 			);
 			productName = "mobile-application-for-students";
 			productReference = E818DEA42D12B8E30015871F /* mobile-application-for-students.app */;
@@ -107,6 +116,10 @@
 			);
 			mainGroup = E818DE9B2D12B8E30015871F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E818DED02D12C5C70015871F /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E842AE432D14D7D70026CD46 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E818DEA52D12B8E30015871F /* Products */;
 			projectDirPath = "";
@@ -147,12 +160,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D5L5LFMXL5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "mobile-application-for-students/Info.plist";
+				INFOPLIST_FILE = "mobile-application-for-students/ApplicationFiles/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "НШГ Липецк";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -160,9 +174,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mobile-application-for-students";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -175,12 +193,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D5L5LFMXL5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "mobile-application-for-students/Info.plist";
+				INFOPLIST_FILE = "mobile-application-for-students/ApplicationFiles/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "НШГ Липецк";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -188,9 +207,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mobile-application-for-students";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -335,6 +358,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E818DED02D12C5C70015871F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		E842AE432D14D7D70026CD46 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E818DED12D12C5C70015871F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E818DED02D12C5C70015871F /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		E842AE442D14D7D70026CD46 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E842AE432D14D7D70026CD46 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E818DE9C2D12B8E30015871F /* Project object */;
 }
