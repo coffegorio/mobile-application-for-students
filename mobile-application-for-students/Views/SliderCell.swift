@@ -13,55 +13,61 @@ class SliderCell: UICollectionViewCell {
     var titleLabel = AppLabel(text: "", textColor: Styles.Colors.appBlackColor, textAlignment: .left, fontSize: 24, fontWeight: .bold)
     var subtitleLabel = AppLabel(text: "", textColor: Styles.Colors.appBlackColor, textAlignment: .left, fontSize: 20, fontWeight: .regular)
     var backButton = AppButton(text: "Назад", fontSize: 20, fontWeight: .regular)
+    var sentButton = AppButton(text: "Отправить", fontSize: 20, fontWeight: .regular)
     
     var guitarVectorImage = AppImageView(imageName: "guitar")
     var drumsVectorImage = AppImageView(imageName: "drums")
     
-    // Поле ввода номера телефона
     var phoneNumberTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите номер телефона"
         textField.backgroundColor = Styles.Colors.appBlackColor
-        textField.textColor = .white // Белый текст
+        textField.textColor = .white
         textField.layer.cornerRadius = 10
         textField.keyboardType = .phonePad
-        textField.isHidden = true // Скрыто по умолчанию
-        
-        // Установка белого цвета для placeholder
+        textField.isHidden = true
         textField.attributedPlaceholder = NSAttributedString(
             string: "Введите номер телефона",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         )
-        
-        // Создаем левую вью для отступа
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 44))
         textField.leftView = leftPaddingView
-        textField.leftViewMode = .always // Отображаем всегда
-
+        textField.leftViewMode = .always
         return textField
     }()
-
     
-    // UISegmentedControl для выбора направления
+    var nameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Как Вас зовут?"
+        textField.backgroundColor = Styles.Colors.appBlackColor
+        textField.textColor = .white
+        textField.layer.cornerRadius = 10
+        textField.isHidden = true
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "Ваше имя",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
+        )
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 44))
+        textField.leftView = leftPaddingView
+        textField.leftViewMode = .always
+        return textField
+    }()
+    
     var directionSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["Барабаны", "Гитара", "Вокал"])
         segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.isHidden = true // Скрыто по умолчанию
+        segmentedControl.isHidden = true
         segmentedControl.backgroundColor = Styles.Colors.appBlackColor
-        
-        // Настройка текста в сегментах
         let normalTextAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.white, // Белый текст
+            .foregroundColor: UIColor.white,
             .font: UIFont.systemFont(ofSize: 14)
         ]
         let selectedTextAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black, // Черный текст для выделенного сегмента
+            .foregroundColor: UIColor.black,
             .font: UIFont.boldSystemFont(ofSize: 14)
         ]
-        
         segmentedControl.setTitleTextAttributes(normalTextAttributes, for: .normal)
         segmentedControl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
-        
         return segmentedControl
     }()
     
@@ -75,8 +81,10 @@ class SliderCell: UICollectionViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(subtitleLabel)
         contentView.addSubview(phoneNumberTextField)
+        contentView.addSubview(nameTextField)
         contentView.addSubview(directionSegmentedControl)
         contentView.addSubview(backButton)
+        contentView.addSubview(sentButton)
         contentView.addSubview(guitarVectorImage)
         contentView.addSubview(drumsVectorImage)
     }
@@ -98,8 +106,14 @@ class SliderCell: UICollectionViewCell {
             make.height.equalTo(44)
         }
         
-        directionSegmentedControl.snp.makeConstraints { make in
+        nameTextField.snp.makeConstraints { make in
             make.top.equalTo(phoneNumberTextField.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(40)
+            make.height.equalTo(44)
+        }
+        
+        directionSegmentedControl.snp.makeConstraints { make in
+            make.top.equalTo(nameTextField.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(40)
         }
         
@@ -107,7 +121,14 @@ class SliderCell: UICollectionViewCell {
             make.leading.equalToSuperview().offset(40)
             make.bottom.equalToSuperview().inset(100)
             make.height.equalTo(50)
-            make.width.equalToSuperview().multipliedBy(0.5)
+            make.width.equalToSuperview().multipliedBy(0.4)
+        }
+        
+        sentButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(40)
+            make.trailing.equalToSuperview().inset(40)
+            make.bottom.equalToSuperview().inset(100)
+            make.height.equalTo(50)
         }
         
         guitarVectorImage.snp.makeConstraints { make in
@@ -127,6 +148,29 @@ class SliderCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(with item: ItemSlider, isLastSlide: Bool, isFirstSlide: Bool, isSecondSlide: Bool) {
+        titleLabel.text = item.title
+        subtitleLabel.text = item.subtitle
+        
+        phoneNumberTextField.isHidden = !isLastSlide
+        nameTextField.isHidden = !isLastSlide
+        directionSegmentedControl.isHidden = !isLastSlide
+        sentButton.isHidden = !isLastSlide
+        guitarVectorImage.isHidden = !isSecondSlide
+        drumsVectorImage.isHidden = !isFirstSlide
+        backButton.isHidden = !isFirstSlide
+        
+        backButton.addTarget(self, action: #selector(handleBackButtonTapped), for: .touchUpInside)
+        sentButton.addTarget(self, action: #selector(handleSentButtonTapped), for: .touchUpInside)
+        
+        contentView.backgroundColor = item.color
+    }
     
+    @objc private func handleBackButtonTapped() {
+        NotificationCenter.default.post(name: .backButtonTapped, object: nil)
+    }
+    
+    @objc private func handleSentButtonTapped() {
+        print("Имя: \(nameTextField.text ?? ""), Телефон: \(phoneNumberTextField.text ?? "")")
+    }
 }
-
