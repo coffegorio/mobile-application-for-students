@@ -26,7 +26,7 @@ class SliderCell: UICollectionViewCell {
     
     private func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(100) // Исправлено
+            make.top.equalTo(contentView.snp.top).offset(60) // Исправлено
             make.leading.equalTo(contentView.snp.leading).offset(40)
             make.trailing.equalTo(contentView.snp.trailing).inset(40)
         }
