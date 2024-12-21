@@ -96,6 +96,9 @@ class NewStudentScreenVC: UIViewController {
         setupShape()
         hideKeyboardWhenTappedAround()
         
+        overrideUserInterfaceStyle = .light
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(moveToSentInfoScreenTapped), name: .moveToSentInfoScreenTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(popViewController), name: .backButtonTapped, object: nil)
     }
 
@@ -194,6 +197,12 @@ class NewStudentScreenVC: UIViewController {
     
     @objc private func popViewController() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func moveToSentInfoScreenTapped() {
+        let sentInfoScreenVC = SentInfoScreenVC()
+        modalPresentationStyle = .fullScreen
+        present(sentInfoScreenVC, animated: true, completion: nil)
     }
 
 

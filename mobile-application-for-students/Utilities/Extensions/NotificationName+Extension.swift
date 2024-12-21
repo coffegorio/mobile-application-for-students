@@ -10,3 +10,7 @@ import Foundation
 extension Notification.Name {
     static let backButtonTapped = Notification.Name("backButtonTapped")
 }
+
+extension Notification.Name {
+    static let moveToSentInfoScreenTapped = Notification.Name("moveToSentInfoScreenTapped")
+}
