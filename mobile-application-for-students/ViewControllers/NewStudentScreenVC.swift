@@ -13,7 +13,7 @@ class NewStudentScreenVC: UIViewController {
     private let sliderData: [ItemSlider] = [
         ItemSlider(color: Styles.Colors.appWhiteColor, title: "Мы одна большая музыкальная семья", subtitle: "Вместе мы создаём гармонию, поддерживаем друг друга и вдохновляем на новые свершения. Здесь каждый найдёт своё место.", imageName: ""),
         ItemSlider(color: Styles.Colors.appWhiteColor, title: "Твоя мечта, наша поддержка", subtitle: "Как в настоящей семье, мы всегда рядом: помогаем, учим и радуемся твоим успехам. Каждый аккорд — шаг к твоему будущему.", imageName: ""),
-        ItemSlider(color: Styles.Colors.appWhiteColor, title: "Общая цель — общее счастье", subtitle: "Мы верим, что музыка объединяет. Вместе с тобой мы строим сообщество, где каждый важен и ценен.", imageName: "")
+        ItemSlider(color: Styles.Colors.appWhiteColor, title: "Запишись на бесплатный первый урок!", subtitle: "Начать - лучший способ начать что - либо! Оставьте свой номер телефона и мы обязательно свяжемся с вами в ближайшее время и подберем время для Вашего первого урока!", imageName: "")
     ]
     
     lazy var collectionView: UICollectionView = {
@@ -47,6 +47,12 @@ class NewStudentScreenVC: UIViewController {
         return stack
     }()
     
+    private let shape = CAShapeLayer()
+    
+    private var currentPageIndex: CGFloat = 0
+    
+    private var fromValue: CGFloat = 0
+    
     lazy var nextPageButton: UIView = {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nextSlide))
        
@@ -78,6 +84,25 @@ class NewStudentScreenVC: UIViewController {
         setupCollection()
         setupConstraints()
         setControll()
+        setShape()
+        hideKeyboardWhenTappedAround()
+    }
+    
+    private func setShape() {
+        
+        currentPageIndex = CGFloat(1) / CGFloat(sliderData.count)
+        
+        let nextStroke = UIBezierPath(arcCenter: CGPoint(x: 25.3, y: 25.3), radius: 23, startAngle: -(.pi/2), endAngle: 5, clockwise: true)
+        shape.path = nextStroke.cgPath
+        shape.fillColor = UIColor.clear.cgColor
+        shape.strokeColor = Styles.Colors.appBlackColor.cgColor
+        shape.lineWidth = 4
+        shape.lineCap = .round
+        shape.strokeStart = 0
+        shape.strokeEnd = 0
+        
+        
+        nextPageButton.layer.addSublayer(shape)
     }
     
     private func setControll() {
@@ -127,20 +152,41 @@ class NewStudentScreenVC: UIViewController {
     }
     
     private func updatePagers() {
-        pagers.forEach { page in
-            let isSelected = page.tag == currentSlide + 1
-
-            if let widthConstraint = page.constraints.first(where: { $0.firstAttribute == .width }) {
-                page.removeConstraint(widthConstraint)
+        // Обновляем состояние точек-пейджеров
+        pagers.enumerated().forEach { index, page in
+            let isSelected = index == currentSlide
+            let targetWidth: CGFloat = isSelected ? 20 : 10
+            
+            // Убираем старые ограничения ширины, если они есть
+            page.constraints.forEach { constraint in
+                if constraint.firstAttribute == .width {
+                    page.removeConstraint(constraint)
+                }
             }
-
+            
+            // Применяем новые ограничения с анимацией
             UIView.animate(withDuration: 0.3) {
                 page.layer.opacity = isSelected ? 1 : 0.5
-                page.widthAnchor.constraint(equalToConstant: isSelected ? 20 : 10).isActive = true
+                page.widthAnchor.constraint(equalToConstant: targetWidth).isActive = true
                 page.heightAnchor.constraint(equalToConstant: 10).isActive = true
+                page.layoutIfNeeded()
             }
         }
+        
+        // Обновляем прогресс-браузер
+        updateProgressBar()
     }
+
+    private func updateProgressBar() {
+        let progress = CGFloat(currentSlide + 1) / CGFloat(sliderData.count)
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.5)
+        CATransaction.setDisableActions(false)
+        shape.strokeEnd = progress
+        CATransaction.commit()
+    }
+
 
     @objc private func scrollToSlide(sender: UIGestureRecognizer) {
         if let index = sender.view?.tag {
@@ -163,13 +209,30 @@ extension NewStudentScreenVC: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? SliderCell {
-            cell.contentView.backgroundColor = sliderData[indexPath.item].color
-            cell.titleLabel.text = sliderData[indexPath.item].title
-            cell.subtitleLabel.text = sliderData[indexPath.item].subtitle
+            
+            let sliderItem = sliderData[indexPath.item]
+            cell.contentView.backgroundColor = sliderItem.color
+            cell.titleLabel.text = sliderItem.title
+            cell.subtitleLabel.text = sliderItem.subtitle
+            
+            // Показываем элементы только на последнем слайде
+            let isLastSlide = indexPath.item == sliderData.count - 1
+            cell.phoneNumberTextField.isHidden = !isLastSlide
+            cell.directionSegmentedControl.isHidden = !isLastSlide
+            
+            let isFirstSlide = indexPath.item == 0
+            cell.backButton.isHidden = !isFirstSlide
+            cell.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+            cell.drumsVectorImage.isHidden = !isFirstSlide
+            
+            let isSecondSlide = indexPath.item == 1
+            cell.guitarVectorImage.isHidden = !isSecondSlide
+            
             return cell
         }
         return UICollectionViewCell()
     }
+
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -193,6 +256,10 @@ extension NewStudentScreenVC: UICollectionViewDelegate, UICollectionViewDataSour
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
