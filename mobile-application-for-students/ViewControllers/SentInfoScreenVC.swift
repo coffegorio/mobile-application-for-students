@@ -152,17 +152,18 @@ class SentInfoScreenVC: UIViewController {
         }
         
         titleBackground.snp.makeConstraints { make in
-            make.centerX.equalTo(titleLabel)
-            make.centerY.equalTo(titleLabel)
-            make.height.equalTo(titleLabel).offset(30)
-            make.width.equalTo(titleLabel).offset(30)
+            make.leading.equalTo(logoImage.snp.trailing).offset(20) // Отступ от лого
+            make.centerY.equalTo(logoImage) // Вертикальное центрирование с лого
+            make.trailing.equalToSuperview().offset(-20) // Отступ от правого края супервью
+            make.height.equalTo(50) // Высота фона
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(logoImage)
-            make.leading.equalTo(logoImage.snp.trailing).offset(40)
-            make.trailing.equalToSuperview().inset(40)
+            make.centerY.equalTo(titleBackground) // Вертикальное центрирование с фоном
+            make.centerX.equalTo(titleBackground)
         }
+
+
         
         phoneNumberTextField.snp.makeConstraints { make in
             make.height.equalTo(50)
@@ -173,6 +174,8 @@ class SentInfoScreenVC: UIViewController {
         }
         
         vStack.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
             make.bottom.equalTo(sentButton.snp.top).offset(-20) // добавляем отступ снизу
