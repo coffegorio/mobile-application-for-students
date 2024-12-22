@@ -10,7 +10,16 @@ import SnapKit
 
 class SentInfoScreenVC: UIViewController {
 
-    private let titleLabel = AppLabel(text: "Запоните поля ниже:", textColor: Styles.Colors.appBlackColor, textAlignment: .left, fontSize: 24, fontWeight: .regular)
+    private let logoImage = AppImageView(imageName: "logo")
+    private let titleBackground = BackgroundForComponents()
+    private let titleLabel = AppLabel(
+        text: "Заполните информацию",
+        textColor: Styles.Colors.appWhiteColor,
+        textAlignment: .center,
+        fontSize: 16,
+        fontWeight: .bold
+    )
+    
     private let sentButton = AppButton(text: "Отправить!", fontSize: 18, fontWeight: .regular)
     
     private let phoneNumberTextField: UITextField = {
@@ -122,6 +131,8 @@ class SentInfoScreenVC: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.addSubview(vStack)
+        scrollView.addSubview(logoImage)
+        scrollView.addSubview(titleBackground)
         scrollView.addSubview(titleLabel)
         scrollView.addSubview(sentButton)
         
@@ -133,9 +144,23 @@ class SentInfoScreenVC: UIViewController {
             make.edges.equalToSuperview()
         }
         
-        titleLabel.snp.makeConstraints { make in
+        logoImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(100)
             make.leading.equalToSuperview().offset(40)
+            make.height.equalTo(50)
+            make.width.equalTo(50)
+        }
+        
+        titleBackground.snp.makeConstraints { make in
+            make.centerX.equalTo(titleLabel)
+            make.centerY.equalTo(titleLabel)
+            make.height.equalTo(titleLabel).offset(30)
+            make.width.equalTo(titleLabel).offset(30)
+        }
+
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(logoImage)
+            make.leading.equalTo(logoImage.snp.trailing).offset(40)
             make.trailing.equalToSuperview().inset(40)
         }
         

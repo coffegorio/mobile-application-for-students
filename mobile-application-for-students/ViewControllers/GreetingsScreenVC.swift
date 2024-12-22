@@ -16,7 +16,6 @@ class GreetingsScreenVC: UIViewController {
     private let viewModel = GreetingsScreenViewModel()
     private var cancellables = Set<AnyCancellable>()
 
-    private let logoImage = AppImageView(imageName: "logo")
     private let titleBackground = BackgroundForComponents()
     private let titleLabel = AppLabel(
         text: "НЕ ШКОЛА ГИТАРЫ",
