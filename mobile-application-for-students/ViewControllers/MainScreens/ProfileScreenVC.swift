@@ -20,7 +20,7 @@ class ProfileScreenVC: UIViewController {
         setupUI()
         setupConstraints()
         updateGreeting()
-        fetchUserNameAndUpdateUI()
+        loadUserNameAndUpdateUI()
     }
     
     private func setupUI() {
@@ -47,15 +47,32 @@ class ProfileScreenVC: UIViewController {
     }
     
     private func updateGreeting() {
-            greetingsLabel.text = GreetingModel.getGreeting()
-        }
+        greetingsLabel.text = GreetingModel.getGreeting()
+    }
     
-    private func fetchUserNameAndUpdateUI() {
+    private func loadUserNameAndUpdateUI() {
+        AuthService.shared.fetchAndUpdateUserNameIfNeeded { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let name):
+                    self?.username.text = name
+                case .failure(let error):
+                    self?.username.text = "Error"
+                    print("Failed to fetch user name: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    
+    private func fetchUserNameAndSave() {
         AuthService.shared.fetchUserName { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let name):
                     self?.username.text = name
+                    // Сохраняем имя в UserDefaults
+                    UserDefaults.standard.setValue(name, forKey: "UserName")
                 case .failure(let error):
                     self?.username.text = "Error"
                     print("Failed to fetch user name: \(error.localizedDescription)")
