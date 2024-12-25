@@ -32,7 +32,7 @@ class AuthScreenVC: UIViewController {
     )
     private let loginTextField = AppTextField(placeholder: "Логин", backgroundColor: Styles.Colors.appBlackColor)
     private let passwordTextField = AppTextField(placeholder: "Пароль", backgroundColor: Styles.Colors.appBlackColor)
-    private let moveToAuthScreenButton = AppButton(text: "Войти", fontSize: 18, fontWeight: .regular)
+    private let authButton = AppButton(text: "Войти", fontSize: 18, fontWeight: .regular)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +60,7 @@ class AuthScreenVC: UIViewController {
             subtitleLabel,
             loginTextField,
             passwordTextField,
-            moveToAuthScreenButton
+            authButton
         ].forEach { contentView.addSubview($0) }
     }
 
@@ -121,7 +121,7 @@ class AuthScreenVC: UIViewController {
             make.height.equalTo(50)
         }
 
-        moveToAuthScreenButton.snp.makeConstraints { make in
+        authButton.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(30)
             make.leading.equalToSuperview().offset(40)
             make.trailing.equalToSuperview().inset(40)
@@ -132,6 +132,7 @@ class AuthScreenVC: UIViewController {
 
     private func setupActions() {
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        authButton.addTarget(self, action: #selector(authButtonTapped), for: .touchUpInside)
     }
 
     private func setupKeyboardObservers() {
@@ -147,6 +148,35 @@ class AuthScreenVC: UIViewController {
             name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
+    }
+    
+    @objc private func authButtonTapped() {
+        let authRequest = LoginUserRequest(email: loginTextField.text ?? "",
+                                           password: passwordTextField.text ?? "")
+        if !Validator.isValidEmail(for: authRequest.email) {
+            AlertManager.showInvalidEmailAlert(on: self)
+            return
+        }
+        if !Validator.isPasswordValid(for: authRequest.password) {
+            AlertManager.showInvalidPasswordAlert(on: self)
+            return
+        }
+        
+        AuthService.shared.signIn(with: authRequest) { error in
+            if error != nil {
+                AlertManager.showSignInErrorAlert(on: self)
+                return
+            } else {
+                if let error = error {
+                    AlertManager.showSignInErrorAlert(on: self)
+                    return
+                }
+                if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
+                    sceneDelegate.checkAuthentification()
+                    print("Пользователь авторизован")
+                }
+            }
+        }
     }
 
     @objc private func keyboardWillShow(_ notification: Notification) {

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		E818DED22D12C5C70015871F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E818DED12D12C5C70015871F /* SnapKit */; };
 		E842AE452D14D7D70026CD46 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E842AE442D14D7D70026CD46 /* Lottie */; };
+		E886801C2D1950A70040827B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E886801B2D1950A70040827B /* FirebaseAuth */; };
+		E886801E2D1950A70040827B /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = E886801D2D1950A70040827B /* FirebaseCore */; };
+		E88680202D1950A70040827B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E886801F2D1950A70040827B /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E818DED22D12C5C70015871F /* SnapKit in Frameworks */,
+				E886801C2D1950A70040827B /* FirebaseAuth in Frameworks */,
+				E886801E2D1950A70040827B /* FirebaseCore in Frameworks */,
+				E88680202D1950A70040827B /* FirebaseFirestore in Frameworks */,
 				E842AE452D14D7D70026CD46 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,6 +93,9 @@
 			packageProductDependencies = (
 				E818DED12D12C5C70015871F /* SnapKit */,
 				E842AE442D14D7D70026CD46 /* Lottie */,
+				E886801B2D1950A70040827B /* FirebaseAuth */,
+				E886801D2D1950A70040827B /* FirebaseCore */,
+				E886801F2D1950A70040827B /* FirebaseFirestore */,
 			);
 			productName = "mobile-application-for-students";
 			productReference = E818DEA42D12B8E30015871F /* mobile-application-for-students.app */;
@@ -119,6 +128,7 @@
 			packageReferences = (
 				E818DED02D12C5C70015871F /* XCRemoteSwiftPackageReference "SnapKit" */,
 				E842AE432D14D7D70026CD46 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				E886801A2D1950A70040827B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E818DEA52D12B8E30015871F /* Products */;
@@ -376,6 +386,14 @@
 				minimumVersion = 4.5.0;
 			};
 		};
+		E886801A2D1950A70040827B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -388,6 +406,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E842AE432D14D7D70026CD46 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		E886801B2D1950A70040827B /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E886801A2D1950A70040827B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		E886801D2D1950A70040827B /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E886801A2D1950A70040827B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		E886801F2D1950A70040827B /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E886801A2D1950A70040827B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
