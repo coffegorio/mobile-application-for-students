@@ -20,5 +20,6 @@ struct Styles {
         static let appWhiteColor = UIColor.white
         static let appBlackColor = UIColor.black
         static let appSecondaryColor = UIColor.gray
+        static let newsBackgroundColor = UIColor(hex: "EEE5E5")
     }
 }
