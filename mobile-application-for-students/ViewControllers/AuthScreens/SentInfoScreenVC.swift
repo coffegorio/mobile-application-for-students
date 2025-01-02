@@ -25,6 +25,7 @@ class SentInfoScreenVC: UIViewController {
     private let phoneNumberTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите номер телефона"
+        textField.autocorrectionType = .no
         textField.backgroundColor = Styles.Colors.appBlackColor
         textField.textColor = .white
         textField.layer.cornerRadius = 10
@@ -42,6 +43,7 @@ class SentInfoScreenVC: UIViewController {
     private let nameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Как Вас зовут?"
+        textField.autocorrectionType = .no
         textField.backgroundColor = Styles.Colors.appBlackColor
         textField.textColor = .white
         textField.layer.cornerRadius = 10

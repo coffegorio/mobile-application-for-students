@@ -48,6 +48,7 @@ class GreetingsScreenVC: UIViewController {
         setupAnimatedLogo()
         setupConstraints()
         bindViewModel()
+        animateTextTyping()
     }
 
     private func setupAnimatedLogo() {
@@ -131,6 +132,27 @@ class GreetingsScreenVC: UIViewController {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    private func animateTypingEffect(for label: UILabel, with text: String, characterDelay: TimeInterval = 0.05, completion: (() -> Void)? = nil) {
+        label.text = "" // Очистим текст перед началом анимации
+        let characters = Array(text)
+        var currentIndex = 0
+
+        Timer.scheduledTimer(withTimeInterval: characterDelay, repeats: true) { timer in
+            if currentIndex < characters.count {
+                label.text?.append(characters[currentIndex]) // Добавляем следующий символ
+                currentIndex += 1
+            } else {
+                timer.invalidate() // Останавливаем таймер, когда текст полностью выведен
+                completion?() // Вызываем completion, если есть
+            }
+        }
+    }
+
+    private func animateTextTyping() {
+        let text = "Войдите в свой профиль, что бы мы понимали, что Вы - наш ученик! Если Вы уже являетесь нашим учеником на одном из направлений, обратитесь к администраторам для создания профиля"
+        animateTypingEffect(for: subtitleLabel, with: text, characterDelay: 0.05)
     }
 
 

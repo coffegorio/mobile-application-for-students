@@ -139,7 +139,7 @@ class SliderCell: UICollectionViewCell {
         guitarVectorImage.snp.makeConstraints { make in
             make.height.equalTo(250)
             make.centerX.equalToSuperview()
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(60)
+            make.top.equalTo(subtitleLabel.snp.bottom).offset(80)
         }
         
         drumsVectorImage.snp.makeConstraints { make in
