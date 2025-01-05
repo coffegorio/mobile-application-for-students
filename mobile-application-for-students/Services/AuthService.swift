@@ -36,6 +36,53 @@ class AuthService {
         }
     }
     
+    public func signUp(with userRequest: RegisterUserRequest, completion: @escaping (Bool, Error?) -> Void) {
+        
+        let name = userRequest.name
+        let surname = userRequest.surname
+        let email = userRequest.email
+        let password = userRequest.password
+        let role = userRequest.role
+        let instrument = userRequest.instrument
+        let secondInstrument = userRequest.secondInstrument
+        let currentStage = userRequest.currentStage
+        let currentLesson = userRequest.currentLesson
+        
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if let error = error {
+                completion(false, error)
+                return
+            }
+            
+            guard let resultUser = result?.user else {
+                completion(false, nil)
+                return
+            }
+            
+            self.db.collection("users")
+                .document(resultUser.uid)
+                .setData([
+                    "name": name,
+                    "surname": surname,
+                    "email": email,
+                    "password": password,
+                    "role": role,
+                    "instrument": instrument,
+                    "secondInstrument": secondInstrument ?? "",
+                    "currentStage": currentStage ?? 0,
+                    "currentLesson": currentLesson ?? 0
+                ]) { error in
+                    if let error = error {
+                        completion(false, error)
+                        return
+                    }
+                    completion(true, nil)
+                }
+            
+        }
+        
+    }
+    
     public func signOut(completion: @escaping (Error?) -> Void) {
         do {
             try Auth.auth().signOut()
@@ -97,6 +144,28 @@ class AuthService {
             }
             
             completion(.success(name))
+        }
+    }
+    
+    public func fetchUserRole(completion: @escaping (Result<String, Error>) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            completion(.failure(NSError(domain: "AuthService", code: 401, userInfo: [NSLocalizedDescriptionKey: "User is not logged in."])))
+            return
+        }
+        
+        db.collection("users").document(uid).getDocument { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let snapshot = snapshot, snapshot.exists, let data = snapshot.data(),
+                  let role = data["role"] as? String else {
+                completion(.failure(NSError(domain: "AuthService", code: 404, userInfo: [NSLocalizedDescriptionKey: "User document or name field not found."])))
+                return
+            }
+            
+            completion(.success(role))
         }
     }
     
