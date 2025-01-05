@@ -127,6 +127,17 @@ class RegisterStudentVC: UIViewController, UIPickerViewDelegate, UIPickerViewDat
             currentLesson,
             registerButton
         ].forEach { content.addSubview($0) }
+        
+        // Скрываем элементы по умолчанию
+        firstDirectionLabel.isHidden = true
+        directionSegmentedControlFirstInstrument.isHidden = true
+        secondDirectionLabel.isHidden = true
+        directionSegmentedControlSecondInstrument.isHidden = true
+        currentStage.isHidden = true
+        currentLesson.isHidden = true
+        
+        // Добавляем обработчик для сегмент-контрола роли
+        directionSegmentedControlUserRole.addTarget(self, action: #selector(roleChanged), for: .valueChanged)
     }
     
     private func setupConstraints() {
@@ -185,47 +196,69 @@ class RegisterStudentVC: UIViewController, UIPickerViewDelegate, UIPickerViewDat
             make.height.equalTo(44)
         }
         
-        firstDirectionLabel.snp.makeConstraints { make in
-            make.top.equalTo(directionSegmentedControlUserRole.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        directionSegmentedControlFirstInstrument.snp.makeConstraints { make in
-            make.top.equalTo(firstDirectionLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(44)
-        }
-        
-        secondDirectionLabel.snp.makeConstraints { make in
-            make.top.equalTo(directionSegmentedControlFirstInstrument.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        directionSegmentedControlSecondInstrument.snp.makeConstraints { make in
-            make.top.equalTo(secondDirectionLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(44)
-        }
-        
-        currentStage.snp.makeConstraints { make in
-            make.top.equalTo(directionSegmentedControlSecondInstrument.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(44)
-        }
-        
-        currentLesson.snp.makeConstraints { make in
-            make.top.equalTo(currentStage.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(44)
-        }
-        
         registerButton.snp.makeConstraints { make in
-            make.top.equalTo(currentLesson.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(50)
             make.bottom.equalToSuperview().offset(-100) // Указание нижнего края контента
         }
+        
+        updateConstraintsForRole() // Обновление видимости
     }
+    
+    private func updateConstraintsForRole() {
+        let isStudent = directionSegmentedControlUserRole.selectedSegmentIndex == 2 // Индекс "Ученик"
+        
+        if isStudent {
+            firstDirectionLabel.snp.remakeConstraints { make in
+                make.top.equalTo(directionSegmentedControlUserRole.snp.bottom).offset(20)
+                make.leading.trailing.equalToSuperview().inset(20)
+            }
+            
+            directionSegmentedControlFirstInstrument.snp.remakeConstraints { make in
+                make.top.equalTo(firstDirectionLabel.snp.bottom).offset(10)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(44)
+            }
+            
+            secondDirectionLabel.snp.remakeConstraints { make in
+                make.top.equalTo(directionSegmentedControlFirstInstrument.snp.bottom).offset(20)
+                make.leading.trailing.equalToSuperview().inset(20)
+            }
+            
+            directionSegmentedControlSecondInstrument.snp.remakeConstraints { make in
+                make.top.equalTo(secondDirectionLabel.snp.bottom).offset(10)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(44)
+            }
+            
+            currentStage.snp.remakeConstraints { make in
+                make.top.equalTo(directionSegmentedControlSecondInstrument.snp.bottom).offset(20)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(44)
+            }
+            
+            currentLesson.snp.remakeConstraints { make in
+                make.top.equalTo(currentStage.snp.bottom).offset(10)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(44)
+            }
+            
+            registerButton.snp.remakeConstraints { make in
+                make.top.equalTo(currentLesson.snp.bottom).offset(20)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(50)
+                make.bottom.equalToSuperview().offset(-100)
+            }
+        } else {
+            registerButton.snp.remakeConstraints { make in
+                make.top.equalTo(directionSegmentedControlUserRole.snp.bottom).offset(20)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(50)
+                make.bottom.equalToSuperview().offset(-100)
+            }
+        }
+    }
+    
     
     private func setupPickers() {
         // Настройка UIPickerView для currentStage
@@ -238,6 +271,38 @@ class RegisterStudentVC: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         currentLessonPicker.dataSource = self
         currentLesson.inputView = currentLessonPicker
     }
+    
+    @objc private func roleChanged() {
+        let isStudent = directionSegmentedControlUserRole.selectedSegmentIndex == 2 // Индекс "Ученик"
+        
+        // Показываем или скрываем элементы
+        firstDirectionLabel.isHidden = !isStudent
+        directionSegmentedControlFirstInstrument.isHidden = !isStudent
+        secondDirectionLabel.isHidden = !isStudent
+        directionSegmentedControlSecondInstrument.isHidden = !isStudent
+        currentStage.isHidden = !isStudent
+        currentLesson.isHidden = !isStudent
+        
+        // Обновляем констрейнты
+        updateConstraintsForRole()
+        
+        if directionSegmentedControlUserRole.selectedSegmentIndex == 2 {
+            firstDirectionLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            firstDirectionLabel.alpha = 0
+            
+            UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: []) {
+                self.firstDirectionLabel.transform = .identity
+                self.firstDirectionLabel.alpha = 1
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut]) {
+                self.firstDirectionLabel.alpha = 0
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
     
     // MARK: - UIPickerViewDataSource
     
